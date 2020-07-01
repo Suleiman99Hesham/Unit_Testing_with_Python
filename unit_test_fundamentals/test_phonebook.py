@@ -1,6 +1,6 @@
 import unittest
 
-from phonebook import PhoneBook
+from unit_test_fundamentals.phonebook import PhoneBook
 
 class PhoneBookTest(unittest.TestCase):
     
@@ -19,20 +19,24 @@ class PhoneBookTest(unittest.TestCase):
         with self.assertRaises(KeyError):
             self.phonebook.lookup("missing")
 
-    @unittest.skip("WIP")
+    # @unittest.skip("WIP")
     def test_empty_phonebook_is_consistent(self):
         self.assertTrue(self.phonebook.is_consistent())
 
-    def test_is_consistent(self):
+    def test_is_consistent_with_different_entries(self):
         self.phonebook.add("Bob", "12345")
-        self.assertTrue(self.phonebook.is_consistent())
         self.phonebook.add("Anna", "012345")
         self.assertTrue(self.phonebook.is_consistent())
-        self.phonebook.add("Sue", "12345") #identical to Bob
+
+    def test_inconsistent_with_duplicate_entries(self):
+        self.phonebook.add("Bob", "12345")
+        self.phonebook.add("Sue", "12345")
         self.assertFalse(self.phonebook.is_consistent())
-        self.phonebook.add("Sue", "123") #prefix to Bob
+
+    def test_inconsistent_with_duplicate_prefix(self):
+        self.phonebook.add("Bob", "12345")
+        self.phonebook.add("Sue", "123")
         self.assertFalse(self.phonebook.is_consistent())
-        
         
 if __name__ == "__main__":
     unittest.main()
